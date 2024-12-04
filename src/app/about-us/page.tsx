@@ -2,6 +2,7 @@ import React from "react";
 import Teams from "./components/Teams";
 import "./styles.css";
 import type * as aboutUsTypes from "./types";
+import TeamCard from "./components/TeamCard";
 
 const members: aboutUsTypes.member[] = [
 	{ name: "Gabby", img: "/team/gabby.jpg" },
@@ -183,15 +184,19 @@ const teams: aboutUsTypes.team[] = [
 export default function Page() {
 	return (
 		<main className="aboutUs">
-			<h1>About Us</h1>
-			<p>
+			<h2 className="mt-16 px-8">About Us</h2>
+			<p className="text-justify max-w-4xl">
 				SF Hacks is more than just an event, we are a team of passionate
 				individuals dedicated to hosting this hackathon. Our diverse team spans
 				across logistics, design, tech operations, social engagement, marketing,
 				and outreach.
 			</p>
-			<h2>Meet Our Team</h2>
-			<Teams teams={teams} members={members} />
+			<h2 className="mt-16">Meet Our Team</h2>
+			<div className="space-y-8 p-8 rounded-2xl">
+				{teams.map((team) => (
+					<TeamCard team={team} members={members} />
+				))}
+			</div>
 		</main>
 	);
 }
