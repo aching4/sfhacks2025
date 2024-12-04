@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Set menu links here
 const NAV_LINKS = [
@@ -76,42 +76,64 @@ function NavLink({
 }
 
 function NavLinks() {
+	const [hide, setHide] = useState(false);
+	const [lastScrollY, setLastScrollY] = useState(0);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setHide(window.scrollY > lastScrollY);
+			setLastScrollY(window.scrollY);
+		};
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, [lastScrollY]);
+
 	return (
-		<div className="flex text-[#13123e] items-center justify-center w-full gap-8 px-6 py-4 text-lg font-medium bg-[#fff6d9] bg-navy-900/80 rounded-xl shadow-lg md:gap-12 lg:text-xl">
-			<Link
-				href="/"
-				className="hidden md:block"
-			>
-				<Image
-					src="/logoNew-vertical.png"
-					alt="SF Hacks logo"
-					width={40}
-					height={40}
-					className="transition-transform duration-200 hover:scale-110"
-				/>
-			</Link>
+		<div
+			onMouseEnter={() => {
+				setHide(false);
+			}}
+		>
+			<div className={`flex text-[#13123e] items-center justify-center w-full gap-8 px-6 py-4 text-lg font-medium bg-[#fff6d9] bg-navy-900/80 rounded-xl shadow-lg md:gap-12 lg:text-xl transition-transform duration-1000${hide ? " -translate-y-[120%]" : ""}`}>
+				<Link
+					href="/"
+					className="hidden md:block"
+				>
+					<Image
+						src="/logoNew-vertical.png"
+						alt="SF Hacks logo"
+						width={40}
+						height={40}
+						className="transition-transform duration-200 hover:scale-110"
+					/>
+				</Link>
 
-			{/* Navigation Links */}
-			<div className="flex items-center gap-8 md:gap-12">
-				{NAV_LINKS.map((link) => (
-					<NavLink
-						key={link.name}
-						href={link.href}
-						newTab={link.newTab}
-					>
-						{link.name}
-					</NavLink>
-				))}
+				{/* Navigation Links */}
+				<div className="flex items-center gap-8 md:gap-12">
+					{NAV_LINKS.map((link) => (
+						<NavLink
+							key={link.name}
+							href={link.href}
+							newTab={link.newTab}
+						>
+							{link.name}
+						</NavLink>
+					))}
+				</div>
+
+				{/* Register Button */}
+				<NavLink
+					href={REGISTER_LINK.href}
+					newTab={true}
+					className="px-6 py-2 text-white transition-all duration-200 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-lg hover:shadow-purple-500/25 hover:scale-105 active:scale-95"
+				>
+					{REGISTER_LINK.name}
+				</NavLink>
 			</div>
-
-			{/* Register Button */}
-			<NavLink
-				href={REGISTER_LINK.href}
-				newTab={true}
-				className="px-6 py-2 text-white transition-all duration-200 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-lg hover:shadow-purple-500/25 hover:scale-105 active:scale-95"
-			>
-				{REGISTER_LINK.name}
-			</NavLink>
 		</div>
 	);
 }
