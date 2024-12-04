@@ -8,7 +8,7 @@ interface AvatarProps {
 
 export default function Avatar({ member }: AvatarProps) {
 	return (
-		<div className="avatar">
+		<div className="avatar shrink-0">
 			<div>
 				<Image
 					src={member.img}
