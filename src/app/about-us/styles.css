@@ -16,7 +16,7 @@
 
 	& .tabs {
 		display: flex;
-		overflow: scroll;
+		overflow: auto;
 
 		padding: 0 1rem;
     
